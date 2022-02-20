@@ -8,15 +8,17 @@
 
 	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
+  <script src="https://unpkg.com/vanilla-picker@2"></script>
 
 	<style type="text/css">
 		#color-palette {
-			width: 300px;
+			width: 70px;
 			background-color: #f1f1f1;
 			display: flex;
 			flex-wrap: wrap;
 			position: absolute;
 			top: 0;
+      right: 0;
 		}
 
 		.swatch {
@@ -35,6 +37,28 @@
 		    margin-right: auto;
 		    display: block;
 		}
+    .button {
+        position: absolute;
+        left: 665px;
+        display: inline-block;
+        box-sizing: border-box;
+        padding: .5em 1em;
+        min-height: 2em;
+        border: none;
+        outline: none;
+        overflow: visible;
+        background-color: black;
+        color: white;
+        font-family: sans-serif;
+        text-align: center;
+        cursor: pointer;
+    }
+    #picker {
+        display: table;
+        padding: 1em;
+        border: 1px solid silver;
+    }
+
 	</style>
 
 	<script type="text/javascript" canvas="canvas">
@@ -111,6 +135,29 @@
 
 				});
 			}
+      var parent = document.querySelector('#picker');
+      // var picker = new Picker(parent);
+
+      // You can do what you want with the chosen color using two callbacks: onChange and onDone.
+      // picker.onChange = function(color) {
+      //     console.log(color.rgbaString);
+      //     cp.history.push(color.rgbaString);
+      //     // cp.options.push(color.rgbaString);
+      //     createColorPalette([color.rgbaString]);
+      // };
+      
+      popupCustom = new Picker({
+          parent: parent,
+          popup: false,
+          alpha: false,
+          editor: false,
+          color: 'blue',
+          editorFormat: 'rgb',
+          onDone: function(color) {
+              cp.history.push(color.rgbaString);
+              createColorPalette([color.rgbaString]);
+          },
+      });
 
       
 			init(true);
@@ -121,5 +168,6 @@
 
 	<canvas id="myCanvas" width="750px" height="750px"></canvas>
 	<div id="color-palette"></div>
+  <div class="button" id="picker">Color Picker</div>
 </body>
 </html>
